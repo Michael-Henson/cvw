@@ -21,6 +21,14 @@
 fir:
 
 
-
+mul_q31:
+	mov a, t4
+	mov b, t5
+	imul a, b
+	mov res, #don't know
+	jr ra
+add_q31:
+	addr a2, a5, t3
+	jr ra
 donej:
     ret                 # all done; return	
