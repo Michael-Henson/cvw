@@ -1,11 +1,11 @@
-TARGET = fir
+TARGET = fir1
 
 $(TARGET).objdump: $(TARGET)
-	riscv64-unknown-elf-objdump -S -O -D $(TARGET) > $(TARGET).objdump
+	riscv64-unknown-elf-objdump -S -O2 -D $(TARGET) > $(TARGET).objdump
 	spike $(TARGET)
     
 $(TARGET): $(TARGET).c Makefile
-	riscv64-unknown-elf-gcc -O -o $(TARGET) -g\
+	riscv64-unknown-elf-gcc -O2 -o $(TARGET) -g\
 	  -march=rv64gc -mabi=lp64d -mcmodel=medany \
 	  -nostdlib -static -lm -fno-tree-loop-distribute-patterns \
 	  -T../common/test.ld -I../common \
