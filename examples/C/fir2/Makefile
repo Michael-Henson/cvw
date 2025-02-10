@@ -1,15 +1,15 @@
-TARGET = fir1
+TARGET = fir2
 
 $(TARGET).objdump: $(TARGET)
-	riscv64-unknown-elf-objdump -S -O2 -D $(TARGET) > $(TARGET).objdump
+	riscv64-unknown-elf-objdump -S -D $(TARGET) > $(TARGET).objdump
 	spike $(TARGET)
     
-$(TARGET): $(TARGET).c Makefile
-	riscv64-unknown-elf-gcc -O2 -o $(TARGET) -g\
+$(TARGET): $(TARGET).c $(TARGET).S Makefile
+	riscv64-unknown-elf-gcc -o $(TARGET) -g\
 	  -march=rv64gc -mabi=lp64d -mcmodel=medany \
 	  -nostdlib -static -lm -fno-tree-loop-distribute-patterns \
 	  -T../common/test.ld -I../common \
-	  $(TARGET).c ../common/crt.S ../common/syscalls.c
+	  $(TARGET).c $(TARGET).S ../common/crt.S ../common/syscalls.c
 # Compiler flags:
 #  -o $(TARGET) defines the name of the output file
 #  -g generates debugging symbols for gdb

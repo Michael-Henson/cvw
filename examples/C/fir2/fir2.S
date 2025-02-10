@@ -19,8 +19,27 @@
 .global fir
 
 fir:
+	forj:
+		bge a2, t0, endfor
+		
+		fori:
+			bge a4, t1, forj
 
+			//mulq31
+				mulh a6, t6, a5
 
+			//addq31
+			j fori
+		add a2, a2, 01 
+	j forj
 
-donej:
+// loop body
+
+	endfor:
+mulq31:
+	mulh a6, t6, a5
+	//mov a6, a6, lsr #31
+addq31:
+	add t3, a2, a6
+done:
     ret                 # all done; return	
