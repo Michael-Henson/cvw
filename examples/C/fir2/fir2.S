@@ -15,25 +15,28 @@
 // t5: pointer to x[j-i+(m-1)] 
 // t6: value of c[i]
 // a5: value of x[j-1+(m-1)]
+// a6: mulh value
 
 .global fir
 
 fir:
+	//addi t0, a2, 0 //set the current y adress to the base y adress
+	//addi t1, a1, 0 //set the cirrent c adress to the base c adress
+	//addi t2, a0, 0 //set the cirrent x adress to the base x adress
 	forj:
-		bge a2, t0, endfor
+		bge a3, t0, endfor
+		addi 0(a2), zero, 0 //set y[j] = 0;
 		
 		fori:
 			bge a4, t1, forj
 
-			//mulq31
 				mulh a6, t6, a5
 
-			//addq31
 			j fori
+		//end fori
 		add a2, a2, 01 
-	j forj
-
-// loop body
+		j forj
+	//end forj
 
 	endfor:
 mulq31:
