@@ -1,7 +1,7 @@
 #include <stdio.h>  // supports printf
 #include "util.h"   // supports verify
 
- //extern void fir(int[], int[], int[], int, int);
+ extern void fir(int[], int[], int[], int, int);
 // Add two Q1.31 fixed point numbers
 //  int add_q31(int a, int b) {
 //  	return a + b;
@@ -73,9 +73,9 @@ int main(void) {
         0xb052c0ce,
         0x9d839dc6
     };
-    //setStats(1);        // record initial mcycle and minstret
+    setStats(1);        // record initial mcycle and minstret
     fir(sin_table, lowpass, y, 20, 4);
-    //setStats(0);        // record elapsed mcycle and minstret
+    setStats(0);        // record elapsed mcycle and minstret
     int i;
     for (i=0; i<17; i++) {
         printf("y[%d] = %x\n", i, y[i]);

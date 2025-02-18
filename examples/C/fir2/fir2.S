@@ -18,7 +18,7 @@
 // a6: multiplication value
 // a7:
 
-//.global fir
+.global fir
 //accumulate in t3
 //xxxxxxxxxxreset t3 before going in loop
 //increment t2 to next address in endi
@@ -42,16 +42,15 @@ fir:
 
 	and t3, t3, x0
 	forj:
-		bge a2, t0, endfor //set end condition for j loop
+		bgt a2, t0, endfor //set end condition for j loop
 		mv t5, t2
-		slli t5, t5, 2
 		fori:
 			bge t4, t1, endi //set end condition for i loop
 
 				lw t6, 0(t4) //take the value at c[i]
 				lw a5, 0(t5) //take the value at x[j-i+m-1]
 				mul a6, t6, a5 // multiply c[i] and x[j-i+(m+1)] 
-				srli a6, a6, 32 // shift the 64 bit number back to q_31
+				srli a6, a6, 31 // shift the 64 bit number back to q_31
 				add t3, t3, a6 //add multiplication result into y[j] 
 
 				add t4, t4, 4 //incriment c by 1 address
