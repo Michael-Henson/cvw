@@ -14,35 +14,58 @@
 // t4: pointer to c[i] in i loop
 // t5: pointer to x[j-i+(m-1)] 
 // t6: value of c[i]
-// a5: value of x[j-1+(m-1)]
-// a6: mulh value
+// a5: value of x[j-i+(m-1)]
+// a6: multiplication value
+// a7:
 
-.global fir
+//.global fir
+//accumulate in t3
+//xxxxxxxxxxreset t3 before going in loop
+//increment t2 to next address in endi
+//xxxxxxxdont forget to shift after mul (signed shifting)
+
 
 fir:
-	//addi t0, a2, 0 //set the current y adress to the base y adress
-	//addi t1, a1, 0 //set the cirrent c adress to the base c adress
-	//addi t2, a0, 0 //set the cirrent x adress to the base x adress
+	sub t0, a3, a4
+	slli t0, t0, 2
+	add t0, t0, a2
+
+	add t1, a4, 0
+	slli t1, t1, 2
+	add t1, t1, a1
+
+	add t2, a4, -1
+	slli t2, t2, 2
+	add t2, t2, a0
+
+	mv t4, a1 //set the current c adress to the base c adress
+
+	and t3, t3, x0
 	forj:
-		bge a3, t0, endfor
-		addi 0(a2), zero, 0 //set y[j] = 0;
-		
+		bge a2, t0, endfor //set end condition for j loop
+		mv t5, t2
+		slli t5, t5, 2
 		fori:
-			bge a4, t1, forj
+			bge t4, t1, endi //set end condition for i loop
 
-				mulh a6, t6, a5
+				lw t6, 0(t4) //take the value at c[i]
+				lw a5, 0(t5) //take the value at x[j-i+m-1]
+				mul a6, t6, a5 // multiply c[i] and x[j-i+(m+1)] 
+				srli a6, a6, 32 // shift the 64 bit number back to q_31
+				add t3, t3, a6 //add multiplication result into y[j] 
 
+				add t4, t4, 4 //incriment c by 1 address
+				add t5, t5, -4 //decrement x by 1 address
 			j fori
 		//end fori
-		add a2, a2, 01 
+		endi:
+		mv t4, a1 // reset C back to base address
+		sw t3, 0(a2)
+		add a2, a2, 4
+		add t2, t2, 4
+		and t3, t3, x0
 		j forj
 	//end forj
 
 	endfor:
-mulq31:
-	mulh a6, t6, a5
-	//mov a6, a6, lsr #31
-addq31:
-	add t3, a2, a6
-done:
-    ret                 # all done; return	
+                # all done; return	
