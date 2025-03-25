@@ -1,0 +1,45 @@
+
+largest:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+80000000:	00004517          	auipc	a0,0x4
+80000004:	00050513          	mv	a0,a0
+80000008:	00054283          	lbu	t0,0(a0) # 80004000 <numbers>
+8000000c:	00400313          	li	t1,4
+80000010:	00100393          	li	t2,1
+
+80000014 <loop>:
+80000014:	00750e33          	add	t3,a0,t2
+80000018:	005e4463          	blt	t3,t0,80000020 <skip>
+8000001c:	000e0293          	mv	t0,t3
+
+80000020 <skip>:
+80000020:	00138393          	addi	t2,t2,1
+80000024:	fff30313          	addi	t1,t1,-1
+80000028:	fe0316e3          	bnez	t1,80000014 <loop>
+
+Disassembly of section .data:
+
+80004000 <numbers>:
+80004000:	3742                	.insn	2, 0x3742
+80004002:	83fd                	.insn	2, 0x83fd
+80004004:	Address 0x80004004 is out of bounds.
+
+
+Disassembly of section .riscv.attributes:
+
+00000000 <.riscv.attributes>:
+   0:	1941                	.insn	2, 0x1941
+   2:	0000                	.insn	2, 0x
+   4:	7200                	.insn	2, 0x7200
+   6:	7369                	.insn	2, 0x7369
+   8:	01007663          	bgeu	zero,a6,14 <_start-0x7fffffec>
+   c:	0000000f          	fence	unknown,unknown
+  10:	7205                	.insn	2, 0x7205
+  12:	3376                	.insn	2, 0x3376
+  14:	6932                	.insn	2, 0x6932
+  16:	7032                	.insn	2, 0x7032
+  18:	0031                	.insn	2, 0x0031
