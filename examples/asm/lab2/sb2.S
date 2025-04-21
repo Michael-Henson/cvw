@@ -4,22 +4,6 @@
 
  .globl __start
 
-#  .data
-
-#  tdat:
-#  tdat1:  .byte 0xef
-#  tdat2:  .byte 0xef
-#  tdat3:  .byte 0xef
-#  tdat4:  .byte 0xef
-#  tdat5:  .byte 0xef
-#  tdat6:  .byte 0xef
-#  tdat7:  .byte 0xef
-#  tdat8:  .byte 0xef
-#  tdat9:  .byte 0xef
-#  tdat10: .byte 0xef
-
-# text
-
 # __start:
 
 test01:
