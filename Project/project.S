@@ -4,7 +4,7 @@
 rvtest_entry_point:
 
     # set up PMP so all of memory is accessible and we don't trap when entering supervisor mode
-    li t0, -1              # t0 = 0xFFFFFFFF
+    li t0, 0xFFFFFFFF              # t0 = 0xFFFFFFFF
     csrw pmpaddr0, t0      # Set top of range to max address
     
     # Define region 0 to cover all addresses as RWX
@@ -16,6 +16,7 @@ rvtest_entry_point:
     # switch to supervisor mode	
 
     # Set mstatus.MPP to 01
+    
     csrr t0, mstatus
     li   t1, 0x0800           # MPP = 01 (S-mode)
     li   t2, 0xe7ff
@@ -34,7 +35,9 @@ rvtest_entry_point:
 
 supervisorstart:
     la t0, pagetable        # get address of root page table
-				            # fill in instructions here 
+	srli t0, t0, 12         # divide address by 12
+    li t0, 0x2008001
+    			            # fill in instructions here 
     csrw satp, t0         	# enable virtual memory
     
     # now we are execuiting on virtual page 0x80000, which is also physical page 0x80000
@@ -68,24 +71,30 @@ tohost:
 
 .data
 
-#     VPN          VPN[1]      VPN[0]     Offset
-# 08000_0000 = 001000000000_0000000000_000000000000
-# 09000_0000 = 001001000000_0000000000_000000000000
+#     VPN       VPN[1]    VPN[0]     Offset
+# 80000000 = 1000000000_0000000000_000000000000
+# 90000000 = 1001000000_0000000000_000000000000
 
 # root (L1) Page table situated at 0x80010000
 .align 16
 pagetable:
-    # VPN[1] = 001000000000
-    .word 0x80000011
-    .space 0x1000
+    .zero 0x200
+    # VPN[1] = 1000000000
+    .word 0x80011000
+    .align 6
     # VPN[1] = 001001000000
-    .word 0x80000011
+    .word 0x80020000
 
     # address format PPN_RSW_D_A_G_U_X_W_R_V
     # PPN = 22 bits    RSW = 2 bits
 
 .align 12
+# L0 page table situated at 0x80011000
     # VPN[0] = 0000000000
     .word 0x8000000F
 
-# L0 page table situated at 0x80011000
+    .align 16
+    .word 0x8000000F
+
+
+ # 8000000F
