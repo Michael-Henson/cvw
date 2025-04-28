@@ -69,14 +69,18 @@ tohost:
 .data
 
 
-.align 16
+
 # root (L1) Page table situated at 0x80010000
+.align 16
 pagetable:
-    la t0, 0x80000000
-    li t1,  0x8000001F  # PPN_00_0_0_1_111_1
-    sw t1, 0(t0)
-    la t0, 0x90000000
-    li t1,  0x8000001F  # PPN_00_0_0_1_111_1
-    sw t1, 0(t0)
-.align 12 
+    .word 0x8000001F
+    .word 0x8000001F
+
+    # address format PPN_RSW_D_A_G_U_X_W_R_V
+    # PPN = 22 bits    RSW = 2 bits
+
+.align 12
+    .word 0x8000001F
+    .word 0x8000001F
+
 # L0 page table situated at 0x80011000
