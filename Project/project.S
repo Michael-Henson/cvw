@@ -77,7 +77,7 @@ tohost:
 pagetable:
     # VPN[1] = 001000000000
     .word 0x80000011
-    .align 24
+    .space 0x1000
     # VPN[1] = 001001000000
     .word 0x80000011
 
