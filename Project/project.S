@@ -68,19 +68,24 @@ tohost:
 
 .data
 
-
+#     VPN          VPN[1]      VPN[0]     Offset
+# 08000_0000 = 001000000000_0000000000_000000000000
+# 09000_0000 = 001001000000_0000000000_000000000000
 
 # root (L1) Page table situated at 0x80010000
 .align 16
 pagetable:
-    .word 0x8000001F
-    .word 0x8000001F
+    # VPN[1] = 001000000000
+    .word 0x80000011
+    .align 24
+    # VPN[1] = 001001000000
+    .word 0x80000011
 
     # address format PPN_RSW_D_A_G_U_X_W_R_V
     # PPN = 22 bits    RSW = 2 bits
 
 .align 12
-    .word 0x8000001F
-    .word 0x8000001F
+    # VPN[0] = 0000000000
+    .word 0x8000000F
 
 # L0 page table situated at 0x80011000
