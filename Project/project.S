@@ -36,7 +36,9 @@ rvtest_entry_point:
 supervisorstart:
     la t0, pagetable        # get address of root page table
 	srli t0, t0, 12         # divide address by 12
-    li t0, 0x2008001
+    lui t1, 0x80000
+    add t1, t1, t0
+     # li t0, 0x2008001
     			            # fill in instructions here 
     csrw satp, t0         	# enable virtual memory
     
@@ -81,11 +83,12 @@ pagetable:
     .zero 0x200
     # VPN[1] = 1000000000
     .word 0x80011000
-    .align 6
+    .zero 0x3c
     # VPN[1] = 001001000000
-    .word 0x80020000
+    .word 0x80012000
 
     # address format PPN_RSW_D_A_G_U_X_W_R_V
+    #                PPN_RSW_0_0_0_0_1_1_1_1
     # PPN = 22 bits    RSW = 2 bits
 
 .align 12
@@ -93,7 +96,7 @@ pagetable:
     # VPN[0] = 0000000000
     .word 0x8000000F
 
-    .align 16
+    .align 12
     .word 0x8000000F
 
 
