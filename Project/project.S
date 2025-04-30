@@ -40,7 +40,7 @@ supervisorstart:
     add t1, t1, t0
      # li t0, 0x2008001
     			            # fill in instructions here 
-    csrw satp, t0         	# enable virtual memory
+    csrw satp, t1         	# enable virtual memory
     
     # now we are execuiting on virtual page 0x80000, which is also physical page 0x80000
     # (this can be whatever you want as long as you use the correct address defined in the proj)	
@@ -79,13 +79,13 @@ tohost:
 
 # root (L1) Page table situated at 0x80010000
 .align 16
-pagetable:
-    .zero 0x200
+pagetable: 
+    .zero 0x800
     # VPN[1] = 1000000000
-    .word 0x80011000
-    .zero 0x3c
+     .4byte 0x80011000
+    .zero 0x5fc
     # VPN[1] = 001001000000
-    .word 0x80012000
+    .4byte 0x80012000
 
     # address format PPN_RSW_D_A_G_U_X_W_R_V
     #                PPN_RSW_0_0_0_0_1_1_1_1
